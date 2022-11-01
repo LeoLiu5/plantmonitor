@@ -207,7 +207,7 @@ void TempHumMoi() {
   moisture->save(Moisture);
   // wait 5 seconds (5000 milliseconds == 5 seconds)
   // delay(60000);
-  if (event.relative_humidity<50 || Moisture<50 || celsius<18 || celsius>28){  
+  if (event.relative_humidity<50 || Moisture<20 || celsius<18 || celsius>28){  
   servo.write(0);  // tell servo to go to a particular angle
   delay(1000);
   
