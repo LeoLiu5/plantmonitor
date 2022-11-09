@@ -3,7 +3,7 @@
 // visit io.adafruit.com if you need to create an account,
 // or if you need your Adafruit IO key.
 #define IO_USERNAME "LeoLiu5"
-#define IO_KEY "aio_dafI44r3C7vIQissO237Sbx0QlS5"
+#define IO_KEY " "
 
 /******************************* WIFI **************************************/
 
@@ -21,7 +21,7 @@
 //   - Adafruit AirLift FeatherWing -> https://www.adafruit.com/product/4264
 
 #define WIFI_SSID "CE-Hub-Student"
-#define WIFI_PASS "casa-ce-gagarin-public-service"
+#define WIFI_PASS " "
 
 // uncomment the following line if you are using airlift
 // #define USE_AIRLIFT

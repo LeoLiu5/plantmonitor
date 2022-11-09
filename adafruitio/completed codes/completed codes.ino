@@ -28,7 +28,7 @@
 #include <ESP8266WiFi.h>        // Include the Wi-Fi library
 
 const char* ssid     = "CE-Hub-Student";         // The SSID (name) of the Wi-Fi network you want to connect to
-const char* password = "casa-ce-gagarin-public-service";     // The password of the Wi-Fi network
+const char* password = "";     // The password of the Wi-Fi network
   
 /************************ Example Starts Here *******************************/
 #include <Adafruit_Sensor.h>
@@ -48,12 +48,13 @@ int Moisture = 1; // initial value just in case web page is loaded before readMo
 int sensorVCC = 13;
 char msg[50];
 unsigned long previousMillis = 0UL;
-unsigned long interval = 60000UL;
+unsigned long interval = 1800000UL; // (1000 (ms) = 1 second; interval = 30 mins)
 // create DHT22 instance
 DHT_Unified dht(DATA_PIN, DHT22);
 
 // set up the 'temperature' and 'humidity' feeds
 // set up the 'servo' feed
+// set up the 'moisture' feed
 AdafruitIO_Feed *servo_feed = io.feed("servo");
 AdafruitIO_Feed *temperature = io.feed("temperature");
 AdafruitIO_Feed *humidity = io.feed("humidity");
@@ -130,10 +131,10 @@ void loop() {
 
   if(currentMillis - previousMillis > interval)
   {
-	/* The Arduino executes this code once every second
- 	*  (interval = 1000 (ms) = 1 second).
+	/* The Arduino executes this code once every 30 mins
+ 	*  (1000 (ms) = 1 second; interval = 30 mins)
  	*/
-  TempHumMoi();
+  TempHumMoi(); // save temperature, humidity, moisture to Adafruit IO
  	// Don't forget to update the previousMillis value
  	previousMillis = currentMillis;
 }}
@@ -173,7 +174,7 @@ void handleMessage(AdafruitIO_Data *data) {
   servo.write(180 - angle);
 }
 
-
+// save temperature, humidity, moisture to Adafruit IO
 void TempHumMoi() {
 
   sensors_event_t event;
@@ -207,7 +208,7 @@ void TempHumMoi() {
   moisture->save(Moisture);
   // wait 5 seconds (5000 milliseconds == 5 seconds)
   // delay(60000);
-  if (event.relative_humidity<50 || Moisture<20 || celsius<18 || celsius>28){  
+  if (event.relative_humidity<50 || Moisture<24 || celsius<18 || celsius>28){  
   servo.write(0);  // tell servo to go to a particular angle
   delay(1000);
   
@@ -220,42 +221,6 @@ void TempHumMoi() {
   servo.write(180);              
   delay(1500);
   
-  servo.write(0);  // tell servo to go to a particular angle
-  delay(1000);
-  
-  servo.write(90);              
-  delay(500); 
-  
-  servo.write(135);              
-  delay(500);
-  
-  servo.write(180);              
-  delay(1500);
-  
-  servo.write(0);  // tell servo to go to a particular angle
-  delay(1000);
-  
-  servo.write(90);              
-  delay(500); 
-  
-  servo.write(135);              
-  delay(500);
-  
-  servo.write(180);              
-  delay(1500);
-
-  servo.write(0);  // tell servo to go to a particular angle
-  delay(1000);
-  
-  servo.write(90);              
-  delay(500); 
-  
-  servo.write(135);              
-  delay(500);
-  
-  servo.write(180);              
-  delay(1500);     
-
   servo.write(0);  // tell servo to go to a particular angle
   delay(1000);
   
