@@ -103,18 +103,18 @@ includes the libraries or files needed for the sketch. We also need to declare s
 // create an instance of the servo class
 Servo servo;
 
-#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+#define DHTTYPE DHT22 // DHT 22 (AM2302), AM2321
 
 // Sensors - DHT22 and Nails
-uint8_t DHTPin = 12;        // on Pin 2 of the Huzzah
-uint8_t soilPin = 0;      // ADC or A0 pin on Huzzah
+uint8_t DHTPin = 12; // on Pin 2 of the Huzzah
+uint8_t soilPin = 0; // ADC or A0 pin on Huzzah
 
 float Temperature;
 float Humidity;
 int Moisture = 1; // initial value just in case web page is loaded before readMoisture called
 int sensorVCC = 13;
 int blueLED = 2;
-DHT dht(DHTPin, DHTTYPE);   // Initialize DHT sensor.
+DHT dht(DHTPin, DHTTYPE); // Initialize DHT sensor.
 
 // Wifi and MQTT
 #include "arduino_secrets.h" 
@@ -128,7 +128,7 @@ DHT dht(DHTPin, DHTTYPE);   // Initialize DHT sensor.
 #define SECRET_MQTTPASS "password";
  */
 
-const char* ssid     = SECRET_SSID;
+const char* ssid = SECRET_SSID;
 const char* password = SECRET_PASS;
 const char* mqttuser = SECRET_MQTTUSER;
 const char* mqttpass = SECRET_MQTTPASS;
@@ -154,43 +154,43 @@ We need to fill [arduino_secrets.h](https://github.com/LeoLiu5/plantmonitor/blob
 #define SECRET_MQTTPASS ""
 ``` 
 
-In setup(), we need to declare the blue LED for status indicator, create a Serial connection for debugging, use pinMode() to initialize the DHT sensor and the servo motor, and initialize the wifi and the MQTT server:
+In setup(), we need to declare the blue LED for the status indicator, create a Serial connection for debugging, using pinMode() to initialize the DHT sensor and the servo motor, and initialize the wifi and the MQTT server:
 
 ``` 
 void setup() {
-  // Set up LED to be controllable via broker
-  // Initialize the BUILTIN_LED pin as an output
-  // Turn the LED off by making the voltage HIGH
-  pinMode(BUILTIN_LED, OUTPUT);     
-  digitalWrite(BUILTIN_LED, HIGH);  
+ // Set up LED to be controllable via the broker
+ // Initialize the BUILTIN_LED pin as an output
+ // Turn the LED off by making the voltage HIGH
+ pinMode(BUILTIN_LED, OUTPUT); 
+ digitalWrite(BUILTIN_LED, HIGH); 
 
-  // Set up the outputs to control the soil sensor
-  // switch and the blue LED for status indicator
-  pinMode(sensorVCC, OUTPUT); 
-  digitalWrite(sensorVCC, LOW);
-  pinMode(blueLED, OUTPUT); 
-  digitalWrite(blueLED, HIGH);
+ // Set up the outputs to control the soil sensor
+ // switch and the blue LED for the status indicator
+ pinMode(sensorVCC, OUTPUT); 
+ digitalWrite(sensorVCC, LOW);
+ pinMode(blueLED, OUTPUT); 
+ digitalWrite(blueLED, HIGH);
 
-  // open serial connection for debug info
-  Serial.begin(115200);
-  delay(100);
-  // tell the servo class which pin we are using
-  servo.attach(SERVO_PIN);
+ // open serial connection for debug info
+ Serial.begin(115200);
+ delay(100);
+ // tell the servo class which pin we are using
+ servo.attach(SERVO_PIN);
 
-  // initialize servo
-  pinMode(SERVO_PIN, OUTPUT);
-  // start DHT22 sensor
-  pinMode(DHTPin, INPUT);
-  dht.begin();
+ // initialize servo
+ pinMode(SERVO_PIN, OUTPUT);
+ // start DHT22 sensor
+ pinMode(DHTPin, INPUT);
+ dht.begin();
 
-  // run initialisation functions
-  startWifi();
-  startWebserver();
-  syncDate();
+ // run initialisation functions
+ startWifi();
+ startWebserver();
+ syncDate();
 
-  // start MQTT server
-  client.setServer(mqtt_server, 1884);
-  client.setCallback(callback);
+ // start MQTT server
+ client.setServer(mqtt_server, 1884);
+ client.setCallback(callback);
 
 }
 ```
@@ -199,219 +199,219 @@ In loop(), we need to check the handler for the webserver to see if anyone is re
 
 ``` 
 void loop() {
-  // handler for receiving requests to webserver
-  server.handleClient();
+ // handler for receiving requests to the webserver
+ server.handleClient();
 
-  if (minuteChanged()) {
-    readMoisture();
-    sendMQTT();
-    Serial.println(GB.dateTime("H:i:s")); // UTC.dateTime("l, d-M-y H:i:s.v T")
+ if (minuteChanged()) {
+ readMoisture();
+ sendMQTT();
+ Serial.println(GB.dateTime("H:i:s")); // UTC.dateTime("l, d-M-y H:i:s.v T")
 
-    
-  }
-  // Testing if the servo working
-  // tell servo to go to a particular angle
-    // servo.write(0);  
-    // delay(1000);
-  
-    // servo.write(90);              
-    // delay(500); 
-  
-    // servo.write(135);              
-    // delay(500);
-  
-    // servo.write(180);              
-    // delay(1500);
-  client.loop();
+ 
+ }
+ // Testing if the servo working
+ // tell servo to go to a particular angle
+ // servo.write(0); 
+ // delay(1000);
+ 
+ // servo.write(90); 
+ // delay(500); 
+ 
+ // servo.write(135); 
+ // delay(500);
+ 
+ // servo.write(180); 
+ // delay(1500);
+ client.loop();
 }
 
 ``` 
 In the rest of [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/mqtt_temp_mois_humi/mqtt_temp_mois_humi.ino), we need to create several functions to complete the codes. 
 ReadMoisture() turns on the soil sensor using the NPN BC547 as a digital switch, so one of the nails can send voltage through the soil and the other nail can measure the [resistance](https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance). StartWifi() initializes the wifi and StartWebserver() initializes the webserver. 
-The Arduino has a concept of time but it is based upon the number of milliseconds since the board started. Therefore,it is better to use SyncDate() function to set the time on the device from an NTP server on the internet and define the time for applications. It is important to record the date or time when a measurement was taken.
-SendMQTT() reconnects to the MQTT broker if it isn't already connected, check to see if there are any messages inbound, read sensors, and update data. I also added a new feature that allow sthe servo motor to spin if the plant needs some water or the environment is not sutible for growing.
-Callback() executes codes when a message is received from the MQTT server for any topics subscribed using client.subscribe(), and reconnect() creates a connection to the MQTT server while defining any subscribed topics.
+The Arduino has a concept of time but it is based on the number of milliseconds since the board started. Therefore, it is better to use SyncDate() function to set the time on the device from an NTP server on the internet and define the time for applications. It is important to record the date or time when a measurement was taken.
+SendMQTT() reconnects to the MQTT broker if it isn't already connected, checks to see if there are any messages inbound, reads sensors, and updates data. I also added a new feature that allows the servo motor to spin if the plant needs some water or the environment is not suitable for growing.
+Callback() executes codes when a message is received from the MQTT server for any topics subscribed using the client.subscribe(), and reconnect() create a connection to the MQTT server while defining any subscribed topics.
 Finally, include the functions associated with the webserver: handle_OnConnect(), handle_NotFound(), and SendHTML():
 
 ``` 
 void readMoisture(){
-  // power the sensor
-  digitalWrite(sensorVCC, HIGH);
-  digitalWrite(blueLED, LOW);
-  delay(100);
-  // read the value from the sensor:
-  Moisture = analogRead(soilPin);         
-  //Moisture = map(analogRead(soilPin), 0,320, 0, 100);    // note: if mapping work out max value by dipping in water     
-  //stop power
-  digitalWrite(sensorVCC, LOW);  
-  digitalWrite(blueLED, HIGH);
-  delay(100);
-  Serial.print("Wet ");
-  Serial.println(Moisture);   // read the value from the nails
+ // power the sensor
+ digitalWrite(sensorVCC, HIGH);
+ digitalWrite(blueLED, LOW);
+ delay(100);
+ // read the value from the sensor:
+ Moisture = analogRead(soilPin); 
+ //Moisture = map(analogRead(soilPin), 0,320, 0, 100); // note: if mapping work out max value by dipping in water 
+ //stop power
+ digitalWrite(sensorVCC, LOW); 
+ digitalWrite(blueLED, HIGH);
+ delay(100);
+ Serial.print("Wet ");
+ Serial.println(Moisture); // read the value from the nails
 }
 void startWifi() {
-  // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, password);
+ // We start by connecting to a WiFi network
+ Serial.println();
+ Serial.print("Connecting to ");
+ Serial.println(ssid);
+ WiFi.begin(ssid, password);
 
-  // check to see if connected and wait until you are
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+ // check to see if connected and wait until you are
+ while (WiFi.status() != WL_CONNECTED) {
+ delay(500);
+ Serial.print(".");
+ }
+ Serial.println("");
+ Serial.println("WiFi connected");
+ Serial.print("IP address: ");
+ Serial.println(WiFi.localIP());
 }
 
 void syncDate() {
-  // get real date and time
-  waitForSync();
-  Serial.println("UTC: " + UTC.dateTime());
-  GB.setLocation("Europe/London");
-  Serial.println("London time: " + GB.dateTime());
+ // get real date and time
+ waitForSync();
+ Serial.println("UTC: " + UTC.dateTime());
+ GB.setLocation("Europe/London");
+ Serial.println("London time: " + GB.dateTime());
 }
 void startWebserver() {
-  // when connected and IP address obtained start HTTP server
-  server.on("/", handle_OnConnect);
-  server.onNotFound(handle_NotFound);
-  server.begin();
-  Serial.println("HTTP server started");
+ // when connected and IP address obtained start HTTP server
+ server.on("/", handle_OnConnect);
+ server.onNotFound(handle_NotFound);
+ server.begin();
+ Serial.println("HTTP server started");
 }
 void sendMQTT() {
 
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
+ if (!client.connected()) {
+ reconnect();
+ }
+ client.loop();
 
-  Temperature = dht.readTemperature(); // Gets the values of the temperature
-  snprintf (msg, 50, "%.1f", Temperature);
-  Serial.print("Publish message for t: ");
-  Serial.println(msg);
-  client.publish("student/CASA0014/plant/Leo's Anonymous Plant/temperature", msg);
+ Temperature = dht.readTemperature(); // Gets the values of the temperature
+ snprintf (msg, 50, "%.1f", Temperature);
+ Serial.print("Publish message for t: ");
+ Serial.println(msg);
+ client.publish("student/CASA0014/plant/Leo's Anonymous Plant/temperature", msg);
 
-  Humidity = dht.readHumidity(); // Gets the values of the humidity
-  snprintf (msg, 50, "%.0f", Humidity);
-  Serial.print("Publish message for h: ");
-  Serial.println(msg);
-  client.publish("student/CASA0014/plant/Leo's Anonymous Plant/humidity", msg);
+ Humidity = dht.readHumidity(); // Gets the values of the humidity
+ snprintf (msg, 50, "%.0f", Humidity);
+ Serial.print("Publish message for h: ");
+ Serial.println(msg);
+ client.publish("student/CASA0014/plant/Leo's Anonymous Plant/humidity", msg);
 
-  //Moisture = analogRead(soilPin);   // moisture read by readMoisture function
-  snprintf (msg, 50, "%.0i", Moisture);
-  Serial.print("Publish message for m: ");
-  Serial.println(msg);
-  client.publish("student/CASA0014/plant/Leo's Anonymous Plant/moisture", msg);
+ //Moisture = analogRead(soilPin); // moisture read by readMoisture function
+ snprintf (msg, 50, "%.0i", Moisture);
+ Serial.print("Publish message for m: ");
+ Serial.println(msg);
+ client.publish("student/CASA0014/plant/Leo's Anonymous Plant/moisture", msg);
 // The servo motor will start to move if one of the below conditions is met:
-    if (Humidity<50 || Moisture<20 || Temperature<18 || Temperature>28){  
-    servo.write(0);  // tell servo to go to a particular angle
-    delay(1000);
-  
-    servo.write(90);              
-    delay(500); 
-  
-    servo.write(135);              
-    delay(500);
-  
-    servo.write(180);              
-    delay(1500);}
+ if (Humidity<50 || Moisture<20 || Temperature<18 || Temperature>28){ 
+ servo.write(0); // tell servo to go to a particular angle
+ delay(1000);
+ 
+ servo.write(90); 
+ delay(500); 
+ 
+ servo.write(135); 
+ delay(500);
+ 
+ servo.write(180); 
+ delay(1500);}
 }
 void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  Serial.println();
+ Serial.print("Message arrived [");
+ Serial.print(topic);
+ Serial.print("] ");
+ for (int i = 0; i < length; i++) {
+ Serial.print((char)payload[i]);
+ }
+ Serial.println();
 
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    digitalWrite(BUILTIN_LED, LOW);   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because it is active low on the ESP-01)
-  } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
-  }
+ // Switch on the LED if an 1 was received as the first character
+ if ((char)payload[0] == '1') {
+ digitalWrite(BUILTIN_LED, LOW); // Turn the LED on (Note that LOW is the voltage level
+ // but actually the LED is on; this is because it is active low on the ESP-01)
+ } else {
+ digitalWrite(BUILTIN_LED, HIGH); // Turn the LED off by making the voltage HIGH
+ }
 
 }
 void reconnect() {
-  // Loop until we're reconnected
-  while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
-    String clientId = "ESP8266Client-";
-    clientId += String(random(0xffff), HEX);
-    
-    // Attempt to connect with clientID, username and password
-    if (client.connect(clientId.c_str(), mqttuser, mqttpass)) {
-      Serial.println("connected");
-      // ... and resubscribe
-      client.subscribe("student/CASA0014/plant/Leo's Anonymous Plant/inTopic");
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
-    }
-  }
+ // Loop until we're reconnected
+ while (!client.connected()) {
+ Serial.print("Attempting MQTT connection...");
+ // Create a random client ID
+ String clientId = "ESP8266Client-";
+ clientId += String(random(0xffff), HEX);
+ 
+ // Attempt to connect with clientID, username and password
+ if (client.connect(clientId.c_str(), mqttuser, mqttpass)) {
+ Serial.println("connected");
+ // ... and resubscribe
+ client.subscribe("student/CASA0014/plant/Leo's Anonymous Plant/inTopic");
+ } else {
+ Serial.print("failed, rc=");
+ Serial.print(client.state());
+ Serial.println(" try again in 5 seconds");
+ // Wait 5 seconds before retrying
+ delay(5000);
+ }
+ }
 }
 void handle_OnConnect() {
-  Temperature = dht.readTemperature(); // Gets the values of the temperature
-  Humidity = dht.readHumidity(); // Gets the values of the humidity
-  server.send(200, "text/html", SendHTML(Temperature, Humidity, Moisture));
+ Temperature = dht.readTemperature(); // Gets the values of the temperature
+ Humidity = dht.readHumidity(); // Gets the values of the humidity
+ server.send(200, "text/html", SendHTML(Temperature, Humidity, Moisture));
 }
 
 void handle_NotFound() {
-  server.send(404, "text/plain", "Not found");
+ server.send(404, "text/plain", "Not found");
 }
 
 String SendHTML(float Temperaturestat, float Humiditystat, int Moisturestat) {
-  String ptr = "<!DOCTYPE html> <html>\n";
-  ptr += "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
-  ptr += "<title>ESP8266 DHT22 Report</title>\n";
-  ptr += "<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
-  ptr += "body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;}\n";
-  ptr += "p {font-size: 24px;color: #444444;margin-bottom: 10px;}\n";
-  ptr += "</style>\n";
-  ptr += "</head>\n";
-  ptr += "<body>\n";
-  ptr += "<div id=\"webpage\">\n";
-  ptr += "<h1>ESP8266 Huzzah DHT22 Report</h1>\n";
+ String ptr = "<!DOCTYPE html> <html>\n";
+ ptr += "<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n";
+ ptr += "<title>ESP8266 DHT22 Report</title>\n";
+ ptr += "<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
+ ptr += "body{margin-top: 50px;} h1 {color: #444444;margin: 50px auto 30px;}\n";
+ ptr += "p {font-size: 24px;color: #444444;margin-bottom: 10px;}\n";
+ ptr += "</style>\n";
+ ptr += "</head>\n";
+ ptr += "<body>\n";
+ ptr += "<div id=\"webpage\">\n";
+ ptr += "<h1>ESP8266 Huzzah DHT22 Report</h1>\n";
 
-  ptr += "<p>Temperature: ";
-  ptr += (int)Temperaturestat;
-  ptr += " C</p>";
-  ptr += "<p>Humidity: ";
-  ptr += (int)Humiditystat;
-  ptr += "%</p>";
-  ptr += "<p>Moisture: ";
-  ptr += Moisturestat;
-  ptr += "</p>";
-  ptr += "<p>Sampled on: ";
-  ptr += GB.dateTime("l,");
-  ptr += "<br>";
-  ptr += GB.dateTime("d-M-y H:i:s T");
-  ptr += "</p>";
+ ptr += "<p>Temperature: ";
+ ptr += (int)Temperaturestat;
+ ptr += " C</p>";
+ ptr += "<p>Humidity: ";
+ ptr += (int)Humiditystat;
+ ptr += "%</p>";
+ ptr += "<p>Moisture: ";
+ ptr += Moisturestat;
+ ptr += "</p>";
+ ptr += "<p>Sampled on: ";
+ ptr += GB.dateTime("l,");
+ ptr += "<br>";
+ ptr += GB.dateTime("d-M-y H:i:s T");
+ ptr += "</p>";
 
-  ptr += "</div>\n";
-  ptr += "</body>\n";
-  ptr += "</html>\n";
-  return ptr;
+ ptr += "</div>\n";
+ ptr += "</body>\n";
+ ptr += "</html>\n";
+ return ptr;
 }
 ``` 
-Now, we should have a working Feather board which is able to send readings to the MQTT webserver and visible locally by browsing to the IP address of the device:
+Now, we should have a working Feather board which can send readings to the MQTT web server and is visible locally by browsing to the IP address of the device:
 
 ![Step 1](./img/s1.6.png) ![Step 1](./img/s1.7.png)
 
-2. Before setting up the Raspberry Pi to our datastore, we need to install [the latest 64bit version of Raspbian](https://www.raspberrypi.com/software/). After the installation, insert a microSD card and make sure there is at least 8GB or larger space. Before start writing on your SD card, choose the 64-bit operating system, then input your local network information and set up your account. Record your information since we will be using them in a miniute. For setting up a headless device when you can plug it into a network where you don't know which IP address will be assigned, check this [guide](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html):
+2. Before setting up the Raspberry Pi to our datastore, we need to install [the latest 64bit version of Raspbian](https://www.raspberrypi.com/software/). After the installation, insert a microSD card and make sure there is at least 8GB or larger space. Before start writing on your SD card, choose the 64-bit operating system, then input your local network information and set up your account. Record your information since we will be using them in a minute. For setting up a headless device when you can plug it into a network where you don't know which IP address will be assigned, check this [guide](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html):
 
 ![Step 2](./img/s2.1.png)
 
-After finishing writing and the card flashed, insert the card into your Raspberry Pi and power it up. Open up a new Terminal window on your Mac and enter the hostname you just created:
+After finishing writing and the card flashes, insert the card into your Raspberry Pi and power it up. Open up a new Terminal window on your Mac and enter the hostname you just created:
 
 ![Step 2](./img/s2.2.jpeg)
 
@@ -463,11 +463,11 @@ sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable grafana-server
 sudo /bin/systemctl start grafana-server
 ``` 
-Now go to http://staff-pi-casa0014.local:3000 and log in use the account "admin" and the password "admin".
+Now go to http://staff-pi-casa0014.local:3000 and log in using the account "admin" and the password "admin".
 
 ![Step 3](./img/s3.1.png)
 
-Add your first datasource and change some settings:
+Add your first data source and change some settings:
 
 ![Step 3](./img/s3.2.png)
 
@@ -479,16 +479,16 @@ In the same dashboard, create a panel for the humidity reading and create anothe
 
 ![Step 3](./img/s3.4.png) ![Step 3](./img/s3.5.png)
 
-# - Another method of uplodaing and displaying the readings is using the **Adafruit IO system**. The **Adafruit IO system** doesn't need the Raspberry Pi, the MQTT server, Influxdb, or Grafana. **The system** has its own dashboards for displaying data and can receive readings directly from the Feather board:
+# - Another method of uploading and displaying the readings is using the **Adafruit IO system**. The **Adafruit IO system** doesn't need the Raspberry Pi, the MQTT server, Influxdb, or Grafana. **The system** has its dashboards for displaying data and can receive readings directly from the Feather board:
 
-1. Open [the Ariduino sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) prepared for Adafruit IO and [the configuration file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/config.h). In addition to the libraries we have installed in the previous section, we need the Adafruit Unified Sensor library as well:
+1. Open [the Arduino sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) prepared for Adafruit IO and [the configuration file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/config.h). In addition to the libraries we have installed in the previous section, we need the Adafruit Unified Sensor library as well:
 
-![Step 1](./img/a1.1.png)  
+![Step 1](./img/a1.1.png) 
 
 [The Adafruit IO sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) has a similar structure to [the workshop sample sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino). 
-It is a combination of [the Adafruit IO Servo Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_16_servo.ino) and [the Adafruit IO Temperature & Humidity Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_15_temp_humidity.ino) both retrieved from the Adafruit IO Arduino library. The library includes many usefl example files designed for various functions. Those examples serve as templates to help beginners, such as me, to initiate a project and provide opportunities to learn. 
+It is a combination of [the Adafruit IO Servo Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_16_servo.ino) and [the Adafruit IO Temperature & Humidity Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_15_temp_humidity.ino) both retrieved from the Adafruit IO Arduino library. The library includes many useful example files designed for various functions. Those examples serve as templates to help beginners, such as me, initiate a project and provide opportunities to learn. 
 
-![Step 1](./img/a1.2.png)  
+![Step 1](./img/a1.2.png) 
 
 Since we are using Adafruit IO instead of MQTT and Grafana to display our data, we need to upload our data to Feeds in Adafruit IO:
 ``` 
@@ -507,40 +507,40 @@ unsigned long interval = 1800000UL; // (1000 (ms) = 1 second; interval = 30 mins
 ...
 unsigned long currentMillis = millis();
 
-  if(currentMillis - previousMillis > interval)
-  {
-	/* The Arduino executes this code once every 30 mins
- 	*  (1000 (ms) = 1 second; interval = 30 mins)
- 	*/
-  TempHumMoi(); // save temperature, humidity, moisture to Adafruit IO
- 	// Don't forget to update the previousMillis value
- 	previousMillis = currentMillis;
+ if(currentMillis - previousMillis > interval)
+ {
+ /* The Arduino executes this code once every 30 mins
+ * (1000 (ms) = 1 second; interval = 30 mins)
+ */
+ TempHumMoi(); // save temperature, humidity, and moisture to Adafruit IO
+ // Don't forget to update the previousMillis value
+ previousMillis = currentMillis;
 
-// save temperature, humidity, moisture to Adafruit IO
+// save temperature, humidity, and moisture to Adafruit IO
 ``` 
 I have changed the frequency of saving readings to Adafruit IO from per minute using minuteChange() to per 30 minutes using (currentMillis - previousMillis > interval).
 
 After compiling [the sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino), we can check the feeds. In Adafruit IO, Feeds not only hold our readings, but also record the meta-data (date, time, and GPS coordinates):
 
-![Step 1](./img/a1.3.png)  
+![Step 1](./img/a1.3.png) 
 
-I left my plant monitor operating overnight in the CASA office from 11/01/2022, 9:30 PM to 11/02/2022, 3:30 PM for 18 hours stright:
+I left my plant monitor operating overnight in the CASA office from 11/01/2022, 9:30 PM to 11/02/2022, 3:30 PM for 18 hours straight:
 
 ![Step 1](./img/a1.5.png)
 
-From the temperature feed, we can see the temperature slowly drops to the lowest point (20.02°C) during the night until 6 am. Then the temperature slowly goes up during the morning and suddenly increases around 10 am when the lecture starts. [The heat generated by the human body for homeostasis disperses throughout the body, and in turn heats up the air surrounding the body.](https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/) At 11:30 am, the temperature reaches its peak (24.45°C). Then, the temperature slowly drops to around 21°C by 3:30pm when people start leaving the room:
+From the temperature feed, we can see the temperature slowly drops to the lowest point (20.02°C) during the night until 6 am. Then the temperature slowly goes up during the morning and suddenly increases around 10 am when the lecture starts. [The heat generated by the human body for homeostasis disperses throughout the body, and in turn, heats the air surrounding the body.](https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/) At 11:30 am, the temperature reaches its peak (24.45°C). Then, the temperature slowly drops to around 21°C by 3:30 pm when people start leaving the room:
 
 ![Step 1](./img/a1.4.png)
 
 [Humidity is a measurement of the amount of water vapour in the air and is usually presented in percentage.](https://www.metoffice.gov.uk/weather/learn-about/weather/types-of-weather/humidity) 
-From the humidity feed, we can see the humidity has been relativly stable (range from 47% to 49%) overnight utill 9:50am, right before the lecture starts. Then the humidity rapidly increases and reaches its peak (62.72%) at 1:50pm. Then the humidity drops to around 21°C by 3:30pm. Overall, the humidity follows a similar trend as the temperature. [There are evidence indicating that the more animals, people or plants are in a room, the more the humidity increases.](https://www.swissflex.com/en/blog/humidity-in-your-bedroom)
+From the humidity feed, we can see the humidity has been relatively stable (ranging from 47% to 49%) overnight until 9:50 am, right before the lecture starts. Then the humidity rapidly increases and reaches its peak (62.72%) at 1:50 pm. Then the humidity drops to around 21°C by 3:30 pm. Overall, the humidity follows a similar trend as the temperature. [There is evidence indicating that the more animals, people or plants are in a room, the more the humidity increases.](https://www.swissflex.com/en/blog/humidity-in-your-bedroom)
 
 ![Step 1](./img/a1.6.png)
 
 From the moisture feed, it is obvious that the moisture readings are not as precise or accurate as the temperature or humidity readings. On the moisture graph, there are lots of unexpected up and down patterns, which cannot be observed from either the temperature or the humidity graph. After comparing my results with other students, I have found that the others have the same issue and not getting stable readings. Therefore, I could rule out the possibility that my prototype or codes are not correct.
-I suspect an explanation behind this phenomenon is because the DHT22 sensor is more advanced, which can provide more reliable results than two nails connected with wires could. 
-Overall, the moisture in the soil does not seem to have any connections with the number of people in a room. The sudden increase at 2:20pm is beacuse the plant was being watered.
-Unlike the temperature or the humidity feed, we have to calibrate the moisture feed to interpret the readings. I have seen severl different ways done by my peers: [Lionel-Lim](https://github.com/Lionel-Lim/plantMonitor) used [Tanh estimators (the hyperbolic tangent function)](https://reference.wolfram.com/language/ref/Tanh.html), which is an efficient normalization technique; [heyhaiden](https://github.com/heyhaiden/plantMonitor) recalculated the range of the moisture readings to 1 ~ 100 for easier graphical representation. I made a similar apporach to [heyhaiden](https://github.com/heyhaiden/plantMonitor)'s calibration method:
+I suspect an explanation behind this phenomenon is that the DHT22 sensor is more advanced, which can provide more reliable results than two nails connected with wires could. 
+Overall, the moisture in the soil does not seem to have any connections with the number of people in a room. The sudden increase at 2:20 pm is because the plant was being watered.
+Unlike the temperature or humidity feed, we have to calibrate the moisture feed to interpret the readings. I have seen several different ways done by my peers: [Lionel-Lim](https://github.com/Lionel-Lim/plantMonitor) used [Tanh estimators (the hyperbolic tangent function)](https://reference.wolfram.com/language/ref/Tanh.html), which is an efficient normalization technique; [heyhaiden](https://github.com/heyhaiden/plantMonitor) recalculated the range of the moisture readings to 1 ~ 100 for easier graphical representation. I made a similar approach to [heyhaiden](https://github.com/heyhaiden/plantMonitor)'s calibration method:
 
 ![Step 1](./img/mc.png)
 
@@ -549,23 +549,4 @@ I tested the maximum moisture reading by putting both nails fully into the water
 ![Step 1](./img/mc1.png)
 
 After drying both nails, I tested the minimum moisture reading by holding both nails in the air and got a reading of 4.57.
-[There are evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as a threshhold indicator that the plant requires watering in the Arduino files. Overall, the moisture feed has a unique overall trend from either the temperature feed or the humidity feed.
-
-
-
-
-
-## - References
-
-- "Adafruit IO Basics: Temperature & Humidity" by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-temperature-and-humidity/arduino-wiring
-- "Adafruit IO Basics: Servo" by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-servo/wiring
-- "A Beginner's Guide to the ESP8266" by Pieter P: <br> https://tttapa.github.io/ESP8266/Chap07%20-%20Wi-Fi%20Connections.html
-- "Energy and Heat Balance" by Lumen Learning: <br> https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/
-- "Humidity" by Met Office:  <br> https://www.metoffice.gov.uk/weather/learn-about/weather/types-of-weather/humidity
-- "How to regulate the humidity in your bedroom" by Swissflex: <br> https://www.swissflex.com/en/blog/humidity-in-your-bedroom
-- "Tanh" by Wolfram. <br> https://reference.wolfram.com/language/ref/Tanh.html
-- "How Soil Moisture Can Affect Your Plant's Growth" by Amir Tajer: <br> https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth
-<br>
-
-
-### 
+[There is evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as a threshold indicator that the plant requires watering in the Arduino files. Overall, the moisture feed has a unique overall trend from either the temperature feed or the humidity feed.
