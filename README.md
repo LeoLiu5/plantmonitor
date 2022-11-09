@@ -1,4 +1,4 @@
-# CASA0014-Plant Monitor-Assessment by Leo Liu(./img/Three plant monitors.jpeg)
+# CASA0014-Plant Monitor-Assessment by Leo Liu [d](./img/Three plant monitors.jpeg)
 ## Everybody's plant monitor is unique in its way.<br><br>
 
 
@@ -20,17 +20,29 @@ getting familiar with MQTT and data flowing across the web
 
 # - Hardware Components Assembling
 1. Prepare two 5cm steel nails and two 15cm single cable wires. Connect each wire to each nail, then use a soldering iron to apply plastic welding around the connecting point between the wire and the nail. Make sure the ends of the wires are embedded under the plastic to prevent corrosion or unstable wires. We will later put both nails into the soil to detect the moisture level. The logic behind using nails is that water can conduct electricity but dry soil can not. As the water content increases, the resistance between the nails decrease (Jin, 2020).
+
 ![Step 1](./img/Step1.1.jpeg)
+
 Next, we will use the packaging piece, which was 3D printed by [Dhruv](https://github.com/drvkmr), to hold our nails and wires. Put the nails through the holes located at both ends and arrange the wires in your way. Then use a soldering iron to apply more plastic welding around the connecting point between the nail and the hole to fix the nail's position.
+
 ![Step 1](./img/Step1.2.jpeg)
+
 2. Take out the CASA Plant Monitor shield board and start soldering the DHT22 sensors and the resistors to the board:
+
 ![Step 2](./img/Step2.1.jpeg)
+
 Flip the board over and start soldering male header pins to the board. We will be using the 3v, GND, A0, D12, and D13 pins from the board. Then push the little green piece, a Nylon PCB Terminal Block, onto the pre-reserved pins on the board. Be careful not to use too much strength and break the board. The Nylon PCB Terminal Block can be used as a quick and simple electrical connection method, which provides a stable connection point for one or more wires together. Use a terminal block screwdriver to connect the wires from the nails to the Nylon PCB Terminal Block, the order of the wires does not matter in this case. 
+
 ![Step 2](./img/Step2.3.jpeg)
+
 Therefore, the electricity can be sent to the soil through one of the wires first, then the other wire will be responsible for detecting the electricity level. Overall, a high moisture level in the soil represents a better ability in conducting electricity (Jin, 2020).
+
 ![Step 2](./img/Step2.2.jpeg)
+
 3. Take out the Feather Huzzah ESP8266 board and start soldering female header pins to the board:
+
 ![Step 3](./img/Step3.1.png)
+
 We will need to connect the following pins from the Feather board to the CASA shield board using 7 colourful male-to-female jumper wires:
 - Feather ADC to A0 of the CASA shield board
 - Feather 13/MOSI to D13 of the CASA shield board
@@ -38,25 +50,38 @@ We will need to connect the following pins from the Feather board to the CASA sh
 Before connecting more pins, we need to solve the problem that there is only one GND pin and one 3V pin in the Feather board. If we directly connect the GND pin and the 3V pin to the CASA shield board, then there will be no GND pin or 3V pin reserved for the servo motor. Fortunately, we can connect two lever connectors to the Feather board to increase the number of GND pins and the 3V pins.
 - Feather GND to one of the 5 lever connectors
 - Feather 3V to the other 5 lever connectors
+
 ![Step 3](./img/Step3.2.png)
+
 - CASA shield GND to the 5 lever connectors connected to Feather GND
 - CASA shield 3V to the 5 lever connectors connected to Feather 3V
+
 ![Step 3](./img/Step3.3.png)
+
 4. We will need to connect the following pins from the Feather board to the Micro Servo Motor SG90 using 3 colourful male-to-male jumper wires:
 - The brown servo motor wire to the 5 lever connectors connected to Feather GND
 - The red servo motor wire to the 5 lever connectors connected to Feather 3V 
 - The orange servo motor wire to Feather Pin 2
+
 ![Step 4](./img/Slide4.1.png)
+
 In terms of waterproofing and making sure the hardware parts can run continuously for 9 months, we will use the plastic protector, which was 3D printed by [Dhruv](https://github.com/drvkmr), to wrap up the components. Use the soldering iron to make melt small holes in the plastic so the jumping wires can connect through the protector. Make sure to test your plant monitor before putting on the plastic protectors, otherwise, it will take more time and effort to take everything apart if something is not assembled correctly. 
+
 ![Step 4](./img/Slide4.2.png)
 
 # - Through this project, I have tried two completely different data uploading and displaying methods. The first one is based on the procedures and the sample codes from the workshop provided by [Duncan](https://github.com/djdunc) :
 1. The programming software we are going to use throughout this project is the Arduino IDE. Start by installing the CP2104 driver from [this official guide](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/using-arduino-ide)on the Arduino IDE. Then go to preferences and paste the URL http://arduino.esp8266.com/stable/package_esp8266com_index.json into the "Additional Board Manager URLs" space. 
+
 ![Step 1](./img/s1.1.png)
+
 Install the latest version of the ESP8266 package in "Board Manager" and open the [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino file in the Arduino IDE. 
+
 ![Step 1](./img/s1.2.png)
+
 Open "Library Manager", and start installing the following libraries so we can include them in our Arduino file:
-![Step 1](./img/s1.2.png)(./img/s1.3.png)(./img/s1.4.png)(./img/s1.5.png)
+
+![Step 1](./img/s1.2.png) [Step 1](./img/s1.3.png) [Step 1](./img/s1.4.png) [Step 1](./img/s1.5.png)
+
 In the [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino file, we can find the 
 ```
 #include
@@ -365,17 +390,28 @@ String SendHTML(float Temperaturestat, float Humiditystat, int Moisturestat) {
 ``` 
 Now, we should have a working Feather board which is able to send readings to the MQTT webserver and visible locally by browsing to the IP address of the device:
 
-![Step 1](./img/s1.6.png) (./img/s1.7.png)
+![Step 1](./img/s1.6.png) [Step 1](./img/s1.7.png)
+
 2. Before setting up the Raspberry Pi to our datastore, we need to install [the latest 64bit version of Raspbian](https://www.raspberrypi.com/software/). After the installation, insert a microSD card and make sure there is at least 8GB or larger space. Before start writing on your SD card, choose the 64-bit operating system, then input your local network information and set up your account. Record your information since we will be using them in a miniute. For setting up a headless device when you can plug it into a network where you don't know which IP address will be assigned, check this [guide](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html)
+
 ![Step 2](./img/s2.1.png)
+
 After finishing writing and the card flashed, insert the card into your Raspberry Pi and power it up. Open up a new Terminal window on your Mac and enter the hostname you just created.
+
 ![Step 2](./img/s2.2.png)
+
 In the Terminal window, install InfluxDB with the Ubuntu & Debian (Arm 64-bit) platform by entering the commands from [the official website](https://portal.influxdata.com/downloads/#influxdb) and [the official guide](https://docs.influxdata.com/influxdb/v2.4/install/?t=Raspberry+Pi). 
+
 ![Step 2](./img/influx.png)
+
 After the setup, input your hostname into the link http://hostname.local:8086 and create a new account. 
+
 ![Step 2](./img/s2.3.png)
+
 Go to Settings -> Templates, insert this link https://github.com/influxdata/community-templates/blob/master/raspberry-pi/raspberry-pi-system.yml to create a Raspberry Pi template for the data:
+
 ![Step 2](./img/s2.4.png)
+
 In the Terminal window, install and set up Telegraf 1.24 by entering the following commands line by line (use the ifconfig command to find your IP address):
 ``` 
 sudo apt-get update && sudo apt-get install telegraf -y
@@ -384,7 +420,9 @@ export INFLUX_ORG=casa0014
 export INFLUX_TOKEN=---you-will-have-your-own-token-here---
 telegraf --config http:// your IP address:8086/api/v2/telegrafs/0a2093eea36cb000
 ``` 
-![Step 2](./img/s2.5.png) (./img/s2.6.png)
+
+![Step 2](./img/s2.5.png) [Step 2](./img/s2.6.png)
+
 Edit the default configuration file on your Raspberry Pi. There are many [configuration options](https://docs.influxdata.com/telegraf/v1.24/configuration/). Here is [an example configuration file]() I have used. In the Terminal window, update the default configuration file using the following commands:
 ``` 
 sudo mv /etc/telegraf/telegraf.conf /etc/telegraf/telegraf-original.conf
@@ -397,7 +435,9 @@ sudo systemctl start telegraf
 sudo systemctl status telegraf
 ``` 
 Now, you can check out the data in Data Explorer:
+
 ![Step 2](./img/s2.7.png)
+
 3. In the Terminal window, install and set up Grafana by entering the following commands line by line:
 
 ``` 
@@ -409,21 +449,29 @@ sudo /bin/systemctl enable grafana-server
 sudo /bin/systemctl start grafana-server
 ``` 
 Now go to http://staff-pi-casa0014.local:3000 and log in use the account "admin" and the password "admin".
+
 ![Step 3](./img/s3.1.png)
+
 Add your first datasource and change some settings:
+
 ![Step 3](./img/s3.2.png)
+
 create a dashboard and in the dashboard, create a panel to display the temperature reading:
 
 ![Step 3](./img/s3.3.png)
+
 In the same dashboard, create a panel for the humidity reading and create another for the moisture reading.
-![Step 3](./img/s3.4.png)(./img/s3.5.png)
+
+![Step 3](./img/s3.4.png) [Step 3](./img/s3.5.png)
 
 # - Another method of uplodaing and displaying the readings is using the **Adafruit IO system**. The **Adafruit IO system** doesn't need the Raspberry Pi, the MQTT server, Influxdb, or Grafana. **The system** has its own dashboards for displaying data and can receive readings directly from the Feather board:
 
 1. Open [the completed plant monitor Ariduino codes](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) prepared for using Adafruit IO and [the configuration file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/config.h). In addition to the libraries we have installed in the previous section, we need the Adafruit Unified Sensor library as well:
 ![Step 1](./img/a1.1.png)  
 [The completed codes file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) has a similar structure to [the Arduino file from the workshop](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino). It is a combination of [the Adafruit IO Servo Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_16_servo.ino) and [the Adafruit IO Temperature & Humidity Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_15_temp_humidity.ino) both retrieved from the Adafruit IO Arduino library. The library includes many usefl example files designed for various functions. Those examples serve as templates to help beginners, such as me, to initiate a project and provide opportunities to learn. 
+
 ![Step 1](./img/a1.2.png)  
+
 Since we are using Adafruit IO instead of MQTT and Grafana to display our data, we need to upload our data to Feeds in Adafruit IO:
 ``` 
 // set up the 'temperature' and 'humidity' feeds
@@ -455,21 +503,33 @@ unsigned long currentMillis = millis();
 I have changed the frequency of saving readings to Adafruit IO from per minute using minuteChange() to per 30 minutes using (currentMillis - previousMillis > interval).
 
 After compiling [the sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino), we can check the feeds. In Adafruit IO, Feeds not only hold our readings, but also record the meta-data (date, time, and GPS coordinates):
+
 ![Step 1](./img/a1.3.png)  
+
 I left my plant monitor operating overnight in the CASA office from 11/01/2022, 9:30 PM to 11/02/2022, 3:30 PM for 18 hours stright:
+
 ![Step 1](./img/a1.5.png)
+
 From the temperature feed, we can see the temperature slowly drops to the lowest point (20.02°C) during the night until 6 am. Then the temperature slowly goes up during the morning and suddenly increases around 10 am when the lecture starts. [The heat generated by the human body for homeostasis disperses throughout the body, and in turn heats up the air surrounding the body.](https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/) At 11:30 am, the temperature reaches its peak (24.45°C). Then, the temperature slowly drops to around 21°C by 3:30pm when people start leaving the room:
+
 ![Step 1](./img/a1.4.png)
+
 [Humidity is a measurement of the amount of water vapour in the air and is usually presented in percentage.](https://www.metoffice.gov.uk/weather/learn-about/weather/types-of-weather/humidity) 
 From the humidity feed, we can see the humidity has been relativly stable (range from 47% to 49%) overnight utill 9:50am, right before the lecture starts. Then the humidity rapidly increases and reaches its peak (62.72%) at 1:50pm. Then the humidity drops to around 21°C by 3:30pm. Overall, the humidity follows a similar trend as the temperature. [There are evidence indicating that the more animals, people or plants are in a room, the more the humidity increases.](https://www.swissflex.com/en/blog/humidity-in-your-bedroom)
+
 ![Step 1](./img/a1.6.png)
+
 From the moisture feed, it is obvious that the moisture readings are not as precise or accurate as the temperature or humidity readings. On the moisture graph, there are lots of unexpected up and down patterns, which cannot be observed from either the temperature or the humidity graph. After comparing my results with other students, I have found that the others have the same issue and not getting stable readings. Therefore, I could rule out the possibility that my prototype or codes are not correct.
 I suspect an explanation behind this phenomenon is because the DHT22 sensor is more advanced, which can provide more reliable results than two nails connected with wires could. 
 Overall, the moisture in the soil does not seem to have any connections with the number of people in a room. The sudden increase at 2:20pm is beacuse the plant was being watered.
 Unlike the temperature or the humidity feed, we have to calibrate the moisture feed to interpret the readings. I have seen severl different ways done by my peers: [Lionel-Lim](https://github.com/Lionel-Lim/plantMonitor) used [Tanh estimators (the hyperbolic tangent function)](https://reference.wolfram.com/language/ref/Tanh.html), which is an efficient normalization technique; [heyhaiden](https://github.com/heyhaiden/plantMonitor) recalculated the range of the moisture readings to 1 ~ 100 for easier graphical representation. I made a similar apporach to [heyhaiden](https://github.com/heyhaiden/plantMonitor)'s calibration method:
+
 ![Step 1](./img/mc.png)
-I tested the maximum moisture reading by putting both nails fully into the water and got a reading of 117.33. 
+
+I tested the maximum moisture reading by putting both nails fully into the water and got a reading of 117.33.
+
 ![Step 1](./img/mc1.png)
+
 After drying both nails, I tested the minimum moisture reading by holding both nails in the air and got a reading of 4.57.
 [There are evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as an indicator that the plant requires watering in the codes.
 can definately provide a much more reliable result than two nails could. has been relativly stable (range from 47% to 49%) overnight utill 9:50am, right before the lecture starts. Then the humidity rapidly increases and reaches its peak (62.72%) at 1:50pm. Then the humidity drops to around 21°C by 3:30pm. Overall, the humidity follows a similar trend as the temperature. [There are evidence indicating that the more animals, people or plants are in a room, the more the humidity increases](https://www.swissflex.com/en/blog/humidity-in-your-bedroom).
@@ -488,11 +548,5 @@ can definately provide a much more reliable result than two nails could. has bee
 - "How Soil Moisture Can Affect Your Plant's Growth." by Amir Tajer: <br> https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth
 <br>
 
-# - Lesson learned from the primary research
-## To validate our idea, We have calculated multimodal CO2 emission manually and studied research papers. <br> By doing that, We have learned some points.
-1. The fastest route is mostly the eco-friendly way in the public transport.
-2. London Undergrounds are most eco-friendly transport mode (more than the National Rail).
-3. London Buses are the least eco-friendly transport mode (x2.85 higher CO2 emission than Underground).
-4. Using the [weighted graph algorithm](https://mathworld.wolfram.com/WeightedGraph.html#:~:text=A%20weighted%20graph%20is%20a,usually%20taken%20to%20be%20positive) ( [Floyd-Warshall Algorithm](https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm) ) for the public transport is really hard.
 
 ### 
