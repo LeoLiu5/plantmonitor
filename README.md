@@ -1,6 +1,6 @@
 # CASA0014-Plant Monitor-Assessment by Leo Liu 
 
-[d](./img/Threeplantmonitors.jpeg)
+![d](./img/Threeplantmonitors.jpeg)
 
 ## Everybody's plant monitor is unique in its way.<br><br>
 
@@ -14,14 +14,15 @@ getting familiar with MQTT and data flowing across the web
 
 ## - Main Hardware Components
 
-[d](./img/Hardwarecomponents.jpeg)
+![d](./img/Hardwarecomponents.jpeg)
 
-- ### [A DHT22 temperature/humidity sensor] (https://thepihut.com/products/dht22-temperature-humidity-sensor-extras?variant=27740418129&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuF0XQfJresicn_DwyArRHfgDXQoU8I8vx1WCKW8TAyW2_viN2bb0choC5kcQAvD_BwE) and a pair of nails. 
+- ### [A DHT22 temperature/humidity sensor](https://thepihut.com/products/dht22-temperature-humidity-sensor-extras?variant=27740418129&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuF0XQfJresicn_DwyArRHfgDXQoU8I8vx1WCKW8TAyW2_viN2bb0choC5kcQAvD_BwE) and a pair of nails. 
 - ### A CASA Plant Monitor shield board designed specifically for this project by [Duncan](https://github.com/djdunc) from the CASA teaching team. for the packaging purpose.
-- ### [A Feather Huzzah ESP8266] (https://www.adafruit.com/product/2821), which can be used as a microcontroller through Wi-Fi communication.
-- ### [A Micro Servo Motor SG90] (https://thepihut.com/products/towerpro-servo-motor-sg90-hv-continuous-rotation?variant=32313097584702&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=Cj0KCQjw7KqZBhCBARIsAI-fTKI-at3NhpNijTn3ZE_aV5rWxfhLGcBbQC2OxSFwUD651NbvcVpOyggaAg0dEALw_wcB), which can rotate 180 degrees.
-- ### [Two Wago 5-way lever connectors] (https://www.tlc-direct.co.uk/Products/WA415C.html?source=adwords&ad_position=&ad_id=&placement=&kw=&network=x&matchtype=&ad_type=pla&product_id=WA415C&product_partition_id=&campaign=shopping_cable_accessories&version=finalurl_v3&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuK6tVA2OvYFV9tns6OoE_1E5pF4wASJ566F2nNVo0v9WS7h3xm6Y7RoC9bMQAvD_BwE). They are perfect for increasing the number of power ports in the boards.
-- ### [A Raspberry Pi] (https://thepihut.com/products/raspberry-pi-4-model-b), which can be used as a data store and upload the data to the CASA MQTT server. (./img/Rpie.jpeg)
+- ### [A Feather Huzzah ESP8266](https://www.adafruit.com/product/2821), which can be used as a microcontroller through Wi-Fi communication.
+- ### [A Micro Servo Motor SG90](https://thepihut.com/products/towerpro-servo-motor-sg90-hv-continuous-rotation?variant=32313097584702&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=Cj0KCQjw7KqZBhCBARIsAI-fTKI-at3NhpNijTn3ZE_aV5rWxfhLGcBbQC2OxSFwUD651NbvcVpOyggaAg0dEALw_wcB), which can rotate 180 degrees.
+- ### [Two Wago 5-way lever connectors](https://www.tlc-direct.co.uk/Products/WA415C.html?source=adwords&ad_position=&ad_id=&placement=&kw=&network=x&matchtype=&ad_type=pla&product_id=WA415C&product_partition_id=&campaign=shopping_cable_accessories&version=finalurl_v3&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuK6tVA2OvYFV9tns6OoE_1E5pF4wASJ566F2nNVo0v9WS7h3xm6Y7RoC9bMQAvD_BwE). They are perfect for increasing the number of power ports in the boards.
+- ### [A Raspberry Pi](https://thepihut.com/products/raspberry-pi-4-model-b), which can be used as a data store and upload the data to the CASA MQTT server. 
+![r](./img/Rpie.jpeg)
 <br>
 
 # - Hardware Components Assembling
@@ -69,14 +70,14 @@ Before connecting more pins, we need to solve the problem that there is only one
 - The red servo motor wire to the 5 lever connectors connected to Feather 3V 
 - The orange servo motor wire to Feather Pin 2
 
-![Step 4](./img/Slide4.1.jpeg)
+![Step 4](./img/Step4.1.jpeg)
 
 In terms of waterproofing and making sure the hardware parts can run continuously for 9 months, we will use the plastic protector, which was 3D printed by [Dhruv](https://github.com/drvkmr), to wrap up the components. Use the soldering iron to make melt small holes in the plastic so the jumping wires can connect through the protector. Make sure to test your plant monitor before putting on the plastic protectors, otherwise, it will take more time and effort to take everything apart if something is not assembled correctly. 
 
-![Step 4](./img/Slide4.2.jpeg)
+![Step 4](./img/Step4.2.jpeg)
 
 # - Through this project, I have tried two completely different data uploading and displaying methods. The first one is based on the procedures and the sample codes from the workshop provided by [Duncan](https://github.com/djdunc) :
-1. The programming software we are going to use throughout this project is the Arduino IDE. Start by installing the CP2104 driver from [this official guide](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/using-arduino-ide)on the Arduino IDE. Then go to preferences and paste the URL http://arduino.esp8266.com/stable/package_esp8266com_index.json into the "Additional Board Manager URLs" space. 
+1. The programming software we are going to use throughout this project is the Arduino IDE. Start by installing the CP2104 driver from [this official guide](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/using-arduino-ide) on the Arduino IDE. Then go to preferences and paste the URL http://arduino.esp8266.com/stable/package_esp8266com_index.json into the "Additional Board Manager URLs" space. 
 
 ![Step 1](./img/s1.1.png)
 
@@ -86,13 +87,15 @@ Install the latest version of the ESP8266 package in "Board Manager" and open th
 
 Open "Library Manager", and start installing the following libraries so we can include them in our Arduino file:
 
-![Step 1](./img/s1.2.png) [Step 1](./img/s1.3.png) [Step 1](./img/s1.4.png) [Step 1](./img/s1.5.png)
+![Step 1](./img/s1.2.png) ![Step 1](./img/s1.3.png) ![Step 1](./img/s1.4.png) ![Step 1](./img/s1.5.png)
 
-In the [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino file, we can find the 
+In [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/mqtt_temp_mois_humi/mqtt_temp_mois_humi.ino), this command 
+
 ```
 #include
 ``` 
-commands that include the libraries or files needed for the sketch. We also need to declare some sensor variables, pin numbers, and the variables required for setting up Wifi and MQTT connections in the folling codes:
+
+includes the libraries or files needed for the sketch. We also need to declare some sensor variables, pin numbers, and the variables required for setting up Wifi and MQTT connections:
 
 ``` 
 // pin used to control the servo
@@ -140,8 +143,10 @@ int value = 0;
 
 // Date and time
 Timezone GB;
+
 ``` 
-We need to fill the [arduino_secrets.h](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/arduino_secrets.h) file to define the variables required for setting up Wifi and MQTT connections as well:
+We need to fill [arduino_secrets.h](https://github.com/LeoLiu5/plantmonitor/blob/main/mqtt_temp_mois_humi/arduino_secrets.h) to define the variables required for setting up Wifi and MQTT connections as well:
+
 ``` 
 #define SECRET_SSID "CE-Hub-Student"
 #define SECRET_PASS ""
@@ -150,6 +155,7 @@ We need to fill the [arduino_secrets.h](https://github.com/LeoLiu5/plantmonitor/
 ``` 
 
 In setup(), we need to declare the blue LED for status indicator, create a Serial connection for debugging, use pinMode() to initialize the DHT sensor and the servo motor, and initialize the wifi and the MQTT server:
+
 ``` 
 void setup() {
   // Set up LED to be controllable via broker
@@ -187,7 +193,8 @@ void setup() {
   client.setCallback(callback);
 
 }
-``` 
+```
+
 In loop(), we need to check the handler for the webserver to see if anyone is requesting a webpage. We can change minuteChanged() to secondChanged() (both functions are included in <ezTime.h>) to change the frequency of data reading and data uploading to the MQTT server:
 
 ``` 
@@ -217,8 +224,10 @@ void loop() {
     // delay(1500);
   client.loop();
 }
+
 ``` 
-In the rest of the [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino) file, we need to create several functions to complete the codes. ReadMoisture() turns on the soil sensor using the NPN BC547 as a digital switch, so one of the nails can send voltage through the soil and the other nail can measure the [resistance](https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance). StartWifi() initializes the wifi and StartWebserver() initializes the webserver. 
+In the rest of [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/mqtt_temp_mois_humi/mqtt_temp_mois_humi.ino), we need to create several functions to complete the codes. 
+ReadMoisture() turns on the soil sensor using the NPN BC547 as a digital switch, so one of the nails can send voltage through the soil and the other nail can measure the [resistance](https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance). StartWifi() initializes the wifi and StartWebserver() initializes the webserver. 
 The Arduino has a concept of time but it is based upon the number of milliseconds since the board started. Therefore,it is better to use SyncDate() function to set the time on the device from an NTP server on the internet and define the time for applications. It is important to record the date or time when a measurement was taken.
 SendMQTT() reconnects to the MQTT broker if it isn't already connected, check to see if there are any messages inbound, read sensors, and update data. I also added a new feature that allow sthe servo motor to spin if the plant needs some water or the environment is not sutible for growing.
 Callback() executes codes when a message is received from the MQTT server for any topics subscribed using client.subscribe(), and reconnect() creates a connection to the MQTT server while defining any subscribed topics.
@@ -396,17 +405,17 @@ String SendHTML(float Temperaturestat, float Humiditystat, int Moisturestat) {
 ``` 
 Now, we should have a working Feather board which is able to send readings to the MQTT webserver and visible locally by browsing to the IP address of the device:
 
-![Step 1](./img/s1.6.png) [Step 1](./img/s1.7.png)
+![Step 1](./img/s1.6.png) ![Step 1](./img/s1.7.png)
 
-2. Before setting up the Raspberry Pi to our datastore, we need to install [the latest 64bit version of Raspbian](https://www.raspberrypi.com/software/). After the installation, insert a microSD card and make sure there is at least 8GB or larger space. Before start writing on your SD card, choose the 64-bit operating system, then input your local network information and set up your account. Record your information since we will be using them in a miniute. For setting up a headless device when you can plug it into a network where you don't know which IP address will be assigned, check this [guide](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html)
+2. Before setting up the Raspberry Pi to our datastore, we need to install [the latest 64bit version of Raspbian](https://www.raspberrypi.com/software/). After the installation, insert a microSD card and make sure there is at least 8GB or larger space. Before start writing on your SD card, choose the 64-bit operating system, then input your local network information and set up your account. Record your information since we will be using them in a miniute. For setting up a headless device when you can plug it into a network where you don't know which IP address will be assigned, check this [guide](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html):
 
 ![Step 2](./img/s2.1.png)
 
-After finishing writing and the card flashed, insert the card into your Raspberry Pi and power it up. Open up a new Terminal window on your Mac and enter the hostname you just created.
+After finishing writing and the card flashed, insert the card into your Raspberry Pi and power it up. Open up a new Terminal window on your Mac and enter the hostname you just created:
 
-![Step 2](./img/s2.2.png)
+![Step 2](./img/s2.2.jpeg)
 
-In the Terminal window, install InfluxDB with the Ubuntu & Debian (Arm 64-bit) platform by entering the commands from [the official website](https://portal.influxdata.com/downloads/#influxdb) and [the official guide](https://docs.influxdata.com/influxdb/v2.4/install/?t=Raspberry+Pi). 
+In the Terminal window, install InfluxDB with the Ubuntu & Debian (Arm 64-bit) platform by entering the commands from [the official website](https://portal.influxdata.com/downloads/#influxdb) and [the official guide](https://docs.influxdata.com/influxdb/v2.4/install/?t=Raspberry+Pi):
 
 ![Step 2](./img/influx.png)
 
@@ -427,7 +436,7 @@ export INFLUX_TOKEN=---you-will-have-your-own-token-here---
 telegraf --config http:// your IP address:8086/api/v2/telegrafs/0a2093eea36cb000
 ``` 
 
-![Step 2](./img/s2.5.png) [Step 2](./img/s2.6.png)
+![Step 2](./img/s2.5.png) ![Step 2](./img/s2.6.png)
 
 Edit the default configuration file on your Raspberry Pi. There are many [configuration options](https://docs.influxdata.com/telegraf/v1.24/configuration/). Here is [an example configuration file]() I have used. In the Terminal window, update the default configuration file using the following commands:
 ``` 
@@ -468,13 +477,16 @@ create a dashboard and in the dashboard, create a panel to display the temperatu
 
 In the same dashboard, create a panel for the humidity reading and create another for the moisture reading.
 
-![Step 3](./img/s3.4.png) [Step 3](./img/s3.5.png)
+![Step 3](./img/s3.4.png) ![Step 3](./img/s3.5.png)
 
 # - Another method of uplodaing and displaying the readings is using the **Adafruit IO system**. The **Adafruit IO system** doesn't need the Raspberry Pi, the MQTT server, Influxdb, or Grafana. **The system** has its own dashboards for displaying data and can receive readings directly from the Feather board:
 
-1. Open [the completed plant monitor Ariduino codes](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) prepared for using Adafruit IO and [the configuration file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/config.h). In addition to the libraries we have installed in the previous section, we need the Adafruit Unified Sensor library as well:
+1. Open [the Ariduino sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) prepared for Adafruit IO and [the configuration file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/config.h). In addition to the libraries we have installed in the previous section, we need the Adafruit Unified Sensor library as well:
+
 ![Step 1](./img/a1.1.png)  
-[The completed codes file](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) has a similar structure to [the Arduino file from the workshop](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino). It is a combination of [the Adafruit IO Servo Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_16_servo.ino) and [the Adafruit IO Temperature & Humidity Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_15_temp_humidity.ino) both retrieved from the Adafruit IO Arduino library. The library includes many usefl example files designed for various functions. Those examples serve as templates to help beginners, such as me, to initiate a project and provide opportunities to learn. 
+
+[The Adafruit IO sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino) has a similar structure to [the workshop sample sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/Upload%20data%20to%20mqtt%20(the%20wrokshop)/mqtt_temp_mois_humi.ino). 
+It is a combination of [the Adafruit IO Servo Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_16_servo.ino) and [the Adafruit IO Temperature & Humidity Example](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/adafruitio%20sample%20codes/adafruitio_15_temp_humidity.ino) both retrieved from the Adafruit IO Arduino library. The library includes many usefl example files designed for various functions. Those examples serve as templates to help beginners, such as me, to initiate a project and provide opportunities to learn. 
 
 ![Step 1](./img/a1.2.png)  
 
@@ -537,21 +549,22 @@ I tested the maximum moisture reading by putting both nails fully into the water
 ![Step 1](./img/mc1.png)
 
 After drying both nails, I tested the minimum moisture reading by holding both nails in the air and got a reading of 4.57.
-[There are evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as an indicator that the plant requires watering in the codes.
-can definately provide a much more reliable result than two nails could. has been relativly stable (range from 47% to 49%) overnight utill 9:50am, right before the lecture starts. Then the humidity rapidly increases and reaches its peak (62.72%) at 1:50pm. Then the humidity drops to around 21°C by 3:30pm. Overall, the humidity follows a similar trend as the temperature. [There are evidence indicating that the more animals, people or plants are in a room, the more the humidity increases](https://www.swissflex.com/en/blog/humidity-in-your-bedroom).
+[There are evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as a threshhold indicator that the plant requires watering in the Arduino files. Overall, the moisture feed has a unique overall trend from either the temperature feed or the humidity feed.
+
+
 
 
 
 ## - References
 
-- "Adafruit IO Basics: Temperature & Humidity." by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-temperature-and-humidity/arduino-wiring
-- "Adafruit IO Basics: Servo." by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-servo/wiring
+- "Adafruit IO Basics: Temperature & Humidity" by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-temperature-and-humidity/arduino-wiring
+- "Adafruit IO Basics: Servo" by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-servo/wiring
 - "A Beginner's Guide to the ESP8266" by Pieter P: <br> https://tttapa.github.io/ESP8266/Chap07%20-%20Wi-Fi%20Connections.html
-- "Energy and Heat Balance": <br> https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/
+- "Energy and Heat Balance" by Lumen Learning: <br> https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/
 - "Humidity" by Met Office:  <br> https://www.metoffice.gov.uk/weather/learn-about/weather/types-of-weather/humidity
-- "How to regulate the humidity in your bedroom": <br> https://www.swissflex.com/en/blog/humidity-in-your-bedroom
+- "How to regulate the humidity in your bedroom" by Swissflex: <br> https://www.swissflex.com/en/blog/humidity-in-your-bedroom
 - "Tanh" by Wolfram. <br> https://reference.wolfram.com/language/ref/Tanh.html
-- "How Soil Moisture Can Affect Your Plant's Growth." by Amir Tajer: <br> https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth
+- "How Soil Moisture Can Affect Your Plant's Growth" by Amir Tajer: <br> https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth
 <br>
 
 
