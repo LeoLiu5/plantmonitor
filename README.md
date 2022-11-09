@@ -1,4 +1,7 @@
-# CASA0014-Plant Monitor-Assessment by Leo Liu [d](./img/Three plant monitors.jpeg)
+# CASA0014-Plant Monitor-Assessment by Leo Liu 
+
+[d](./img/Threeplantmonitors.jpeg)
+
 ## Everybody's plant monitor is unique in its way.<br><br>
 
 
@@ -9,7 +12,10 @@ Feather Huzzah ESP8266 Wifi
 getting familiar with MQTT and data flowing across the web
 
 
-## - Main Hardware Components(./img/Hardware components.jpeg)
+## - Main Hardware Components
+
+[d](./img/Hardwarecomponents.jpeg)
+
 - ### [A DHT22 temperature/humidity sensor] (https://thepihut.com/products/dht22-temperature-humidity-sensor-extras?variant=27740418129&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuF0XQfJresicn_DwyArRHfgDXQoU8I8vx1WCKW8TAyW2_viN2bb0choC5kcQAvD_BwE) and a pair of nails. 
 - ### A CASA Plant Monitor shield board designed specifically for this project by [Duncan](https://github.com/djdunc) from the CASA teaching team. for the packaging purpose.
 - ### [A Feather Huzzah ESP8266] (https://www.adafruit.com/product/2821), which can be used as a microcontroller through Wi-Fi communication.
@@ -41,7 +47,7 @@ Therefore, the electricity can be sent to the soil through one of the wires firs
 
 3. Take out the Feather Huzzah ESP8266 board and start soldering female header pins to the board:
 
-![Step 3](./img/Step3.1.png)
+![Step 3](./img/Step3.1.jpeg)
 
 We will need to connect the following pins from the Feather board to the CASA shield board using 7 colourful male-to-female jumper wires:
 - Feather ADC to A0 of the CASA shield board
@@ -51,23 +57,23 @@ Before connecting more pins, we need to solve the problem that there is only one
 - Feather GND to one of the 5 lever connectors
 - Feather 3V to the other 5 lever connectors
 
-![Step 3](./img/Step3.2.png)
+![Step 3](./img/Step3.2.jpeg)
 
 - CASA shield GND to the 5 lever connectors connected to Feather GND
 - CASA shield 3V to the 5 lever connectors connected to Feather 3V
 
-![Step 3](./img/Step3.3.png)
+![Step 3](./img/Step3.3.jpeg)
 
 4. We will need to connect the following pins from the Feather board to the Micro Servo Motor SG90 using 3 colourful male-to-male jumper wires:
 - The brown servo motor wire to the 5 lever connectors connected to Feather GND
 - The red servo motor wire to the 5 lever connectors connected to Feather 3V 
 - The orange servo motor wire to Feather Pin 2
 
-![Step 4](./img/Slide4.1.png)
+![Step 4](./img/Slide4.1.jpeg)
 
 In terms of waterproofing and making sure the hardware parts can run continuously for 9 months, we will use the plastic protector, which was 3D printed by [Dhruv](https://github.com/drvkmr), to wrap up the components. Use the soldering iron to make melt small holes in the plastic so the jumping wires can connect through the protector. Make sure to test your plant monitor before putting on the plastic protectors, otherwise, it will take more time and effort to take everything apart if something is not assembled correctly. 
 
-![Step 4](./img/Slide4.2.png)
+![Step 4](./img/Slide4.2.jpeg)
 
 # - Through this project, I have tried two completely different data uploading and displaying methods. The first one is based on the procedures and the sample codes from the workshop provided by [Duncan](https://github.com/djdunc) :
 1. The programming software we are going to use throughout this project is the Arduino IDE. Start by installing the CP2104 driver from [this official guide](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/using-arduino-ide)on the Arduino IDE. Then go to preferences and paste the URL http://arduino.esp8266.com/stable/package_esp8266com_index.json into the "Additional Board Manager URLs" space. 
