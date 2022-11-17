@@ -2,19 +2,18 @@
 
 ![d](./img/Threeplantmonitors.jpeg)
 
-## Everybody's plant monitor is unique in its way.<br><br>
+## Everybody's plant monitor is unique in its way, just like any IoT device!<br><br>
+
 
 
 > ## Project Objective 
-> <br> The purpose of this project is to provide the reader with a worked-out example of how to build your plant monitoring system. Through this project, the reader will be exposed to two completely different data flowing and displaying methods. By the end of this documentation, the reader will have enough information to decide between two data processing methods. 
-if they want to use theCASA MQTT server, stored in InfluxDB and visualized on Grafana.
-Feather Huzzah ESP8266 Wifi
-getting familiar with MQTT and data flowing across the web
+> <br> The purpose of this project is to provide the reader with a worked-out example of how to build a plant monitoring system. I will briefly work through the procedures to demonstrate two completely different data flowing and displaying methods. My [GitHub](https://github.com/LeoLiu5/plantmonitor) has more specific details. By the end, the reader will have enough knowledge to reflect on the role of IoT in Connected Environments based on my experience.
+> <br>
 
 
 ## - Main Hardware Components
 
-![d](./img/Hardwarecomponents.jpeg)
+<img src="./img/Hardwarecomponents.jpeg"  width="50%" height="50%">
 
 - ### [A DHT22 temperature/humidity sensor](https://thepihut.com/products/dht22-temperature-humidity-sensor-extras?variant=27740418129&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuF0XQfJresicn_DwyArRHfgDXQoU8I8vx1WCKW8TAyW2_viN2bb0choC5kcQAvD_BwE) and a pair of nails. 
 - ### A CASA Plant Monitor shield board designed specifically for this project by [Duncan](https://github.com/djdunc) from the CASA teaching team. for the packaging purpose.
@@ -22,33 +21,35 @@ getting familiar with MQTT and data flowing across the web
 - ### [A Micro Servo Motor SG90](https://thepihut.com/products/towerpro-servo-motor-sg90-hv-continuous-rotation?variant=32313097584702&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gclid=Cj0KCQjw7KqZBhCBARIsAI-fTKI-at3NhpNijTn3ZE_aV5rWxfhLGcBbQC2OxSFwUD651NbvcVpOyggaAg0dEALw_wcB), which can rotate 180 degrees.
 - ### [Two Wago 5-way lever connectors](https://www.tlc-direct.co.uk/Products/WA415C.html?source=adwords&ad_position=&ad_id=&placement=&kw=&network=x&matchtype=&ad_type=pla&product_id=WA415C&product_partition_id=&campaign=shopping_cable_accessories&version=finalurl_v3&gclid=CjwKCAjwtp2bBhAGEiwAOZZTuK6tVA2OvYFV9tns6OoE_1E5pF4wASJ566F2nNVo0v9WS7h3xm6Y7RoC9bMQAvD_BwE). They are perfect for increasing the number of power ports in the boards.
 - ### [A Raspberry Pi](https://thepihut.com/products/raspberry-pi-4-model-b), which can be used as a data store and upload the data to the CASA MQTT server. 
-![r](./img/Rpie.jpeg)
+<img src="./img/Rpie.jpeg"  width="50%" height="50%" class="center">
 <br>
 
 # - Hardware Components Assembling
 1. Prepare two 5cm steel nails and two 15cm single cable wires. Connect each wire to each nail, then use a soldering iron to apply plastic welding around the connecting point between the wire and the nail. Make sure the ends of the wires are embedded under the plastic to prevent corrosion or unstable wires. We will later put both nails into the soil to detect the moisture level. The logic behind using nails is that water can conduct electricity but dry soil can not. As the water content increases, the resistance between the nails decrease (Jin, 2020).
 
-![Step 1](./img/Step1.1.jpeg)
+<img src="./img/Step1.1.jpeg"  width="50%" height="50%" class="center">
 
 Next, we will use the packaging piece, which was 3D printed by [Dhruv](https://github.com/drvkmr), to hold our nails and wires. Put the nails through the holes located at both ends and arrange the wires in your way. Then use a soldering iron to apply more plastic welding around the connecting point between the nail and the hole to fix the nail's position.
 
-![Step 1](./img/Step1.2.jpeg)
+<img src="./img/Step1.2.jpeg" width="30%" height="30%" class="center">
+
 
 2. Take out the CASA Plant Monitor shield board and start soldering the DHT22 sensors and the resistors to the board:
 
-![Step 2](./img/Step2.1.jpeg)
+<img src="./img/Step2.1.jpeg" width="30%" height="30%" class="center">
 
 Flip the board over and start soldering male header pins to the board. We will be using the 3v, GND, A0, D12, and D13 pins from the board. Then push the little green piece, a Nylon PCB Terminal Block, onto the pre-reserved pins on the board. Be careful not to use too much strength and break the board. The Nylon PCB Terminal Block can be used as a quick and simple electrical connection method, which provides a stable connection point for one or more wires together. Use a terminal block screwdriver to connect the wires from the nails to the Nylon PCB Terminal Block, the order of the wires does not matter in this case. 
 
-![Step 2](./img/Step2.3.jpeg)
+<img src="./img/Step2.3.jpeg"  width="50%" height="50%" class="center">
+
 
 Therefore, the electricity can be sent to the soil through one of the wires first, then the other wire will be responsible for detecting the electricity level. Overall, a high moisture level in the soil represents a better ability in conducting electricity (Jin, 2020).
 
-![Step 2](./img/Step2.2.jpeg)
+<img src="./img/Step2.2.jpeg" width="50%" height="50%" class="center">
 
 3. Take out the Feather Huzzah ESP8266 board and start soldering female header pins to the board:
 
-![Step 3](./img/Step3.1.jpeg)
+<img src="./img/Step3.1.jpeg"  width="30%" height="30%" class="center">
 
 We will need to connect the following pins from the Feather board to the CASA shield board using 7 colourful male-to-female jumper wires:
 - Feather ADC to A0 of the CASA shield board
@@ -77,6 +78,7 @@ In terms of waterproofing and making sure the hardware parts can run continuousl
 ![Step 4](./img/Step4.2.jpeg)
 
 # - Through this project, I have tried two completely different data uploading and displaying methods. The first one is based on the procedures and the sample codes from the workshop provided by [Duncan](https://github.com/djdunc) :
+
 1. The programming software we are going to use throughout this project is the Arduino IDE. Start by installing the CP2104 driver from [this official guide](https://learn.adafruit.com/adafruit-feather-huzzah-esp8266/using-arduino-ide) on the Arduino IDE. Then go to preferences and paste the URL http://arduino.esp8266.com/stable/package_esp8266com_index.json into the "Additional Board Manager URLs" space. 
 
 ![Step 1](./img/s1.1.png)
@@ -87,7 +89,9 @@ Install the latest version of the ESP8266 package in "Board Manager" and open th
 
 Open "Library Manager", and start installing the following libraries so we can include them in our Arduino file:
 
-![Step 1](./img/s1.2.png) ![Step 1](./img/s1.3.png) ![Step 1](./img/s1.4.png) ![Step 1](./img/s1.5.png)
+<img src="./img/s1.2.png" width="80%" height="80%" class="center">
+
+<img src="./img/s1.3.png" width="30%" height="30%" class="center"><img src="./img/s1.4.png" width="30%" height="30%" class="center"><img src="./img/s1.5.png" width="30%" height="30%" class="center">
 
 In [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/mqtt_temp_mois_humi/mqtt_temp_mois_humi.ino), this command 
 
@@ -95,7 +99,7 @@ In [mqtt_temp_mois_humi.ino](https://github.com/LeoLiu5/plantmonitor/blob/main/m
 #include
 ``` 
 
-includes the libraries or files needed for the sketch. We also need to declare some sensor variables, pin numbers, and the variables required for setting up Wifi and MQTT connections:
+includes the files needed for the sketch. We also need to declare some sensor variables, pin numbers, and the variables required for setting up Wifi and MQTT connections:
 
 ``` 
 // pin used to control the servo
@@ -111,7 +115,7 @@ uint8_t soilPin = 0; // ADC or A0 pin on Huzzah
 
 float Temperature;
 float Humidity;
-int Moisture = 1; // initial value just in case web page is loaded before readMoisture called
+int Moisture = 1; // initial value just in case the web page is loaded before readMoisture called
 int sensorVCC = 13;
 int blueLED = 2;
 DHT dht(DHTPin, DHTTYPE); // Initialize DHT sensor.
@@ -119,8 +123,8 @@ DHT dht(DHTPin, DHTTYPE); // Initialize DHT sensor.
 // Wifi and MQTT
 #include "arduino_secrets.h" 
 /*
-**** please enter your sensitive data in the Secret tab/arduino_secrets.h
-**** using format below
+**** Please enter your sensitive data in the Secret tab/arduino_secrets.h
+**** using the format below
 
 #define SECRET_SSID "ssid name"
 #define SECRET_PASS "ssid password"
@@ -306,7 +310,7 @@ void sendMQTT() {
  Serial.println(msg);
  client.publish("student/CASA0014/plant/Leo's Anonymous Plant/moisture", msg);
 // The servo motor will start to move if one of the below conditions is met:
- if (Humidity<50 || Moisture<20 || Temperature<18 || Temperature>28){ 
+ if (Humidity<50 || Moisture<24 || Temperature<18 || Temperature>28){ 
  servo.write(0); // tell servo to go to a particular angle
  delay(1000);
  
@@ -328,7 +332,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
  }
  Serial.println();
 
- // Switch on the LED if an 1 was received as the first character
+ // Switch on the LED if a 1 was received as the first character
  if ((char)payload[0] == '1') {
  digitalWrite(BUILTIN_LED, LOW); // Turn the LED on (Note that LOW is the voltage level
  // but actually the LED is on; this is because it is active low on the ESP-01)
@@ -518,9 +522,9 @@ unsigned long currentMillis = millis();
 
 // save temperature, humidity, and moisture to Adafruit IO
 ``` 
-I have changed the frequency of saving readings to Adafruit IO from per minute using minuteChange() to per 30 minutes using (currentMillis - previousMillis > interval).
 
-After compiling [the sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino), we can check the feeds. In Adafruit IO, Feeds not only hold our readings, but also record the meta-data (date, time, and GPS coordinates):
+
+2. After compiling [the sketch](https://github.com/LeoLiu5/plantmonitor/blob/main/adafruitio/completed%20codes/completed%20codes.ino), we can check the feeds. In Adafruit IO, Feeds not only hold our readings, but also record the meta-data (date, time, and GPS coordinates):
 
 ![Step 1](./img/a1.3.png) 
 
@@ -537,9 +541,9 @@ From the humidity feed, we can see the humidity has been relatively stable (rang
 
 ![Step 1](./img/a1.6.png)
 
-From the moisture feed, it is obvious that the moisture readings are not as precise or accurate as the temperature or humidity readings. On the moisture graph, there are lots of unexpected up and down patterns, which cannot be observed from either the temperature or the humidity graph. After comparing my results with other students, I have found that the others have the same issue and not getting stable readings. Therefore, I could rule out the possibility that my prototype or codes are not correct.
+From the moisture feed, it is obvious that the moisture readings are not as precise or accurate as the temperature or humidity readings. On the moisture graph, there are lots of unexpected up and down patterns, which cannot be observed from either the temperature or the humidity graph. After comparing my results with other students, I have found that the others have the same issue and not getting stable readings. Therefore, I could rule out the possibility that my prototype or codes are malfunctioning.
 I suspect an explanation behind this phenomenon is that the DHT22 sensor is more advanced, which can provide more reliable results than two nails connected with wires could. 
-Overall, the moisture in the soil does not seem to have any connections with the number of people in a room. The sudden increase at 2:20 pm is because the plant was being watered.
+Overall, the moisture feed has a unique overall trend from either the temperature feed or the humidity feed. The moisture level in the soil does not seem to have any connection with the number of people in the room. The sudden increase at 2:20 pm is because the plant was being watered.
 Unlike the temperature or humidity feed, we have to calibrate the moisture feed to interpret the readings. I have seen several different ways done by my peers: [Lionel-Lim](https://github.com/Lionel-Lim/plantMonitor) used [Tanh estimators (the hyperbolic tangent function)](https://reference.wolfram.com/language/ref/Tanh.html), which is an efficient normalization technique; [heyhaiden](https://github.com/heyhaiden/plantMonitor) recalculated the range of the moisture readings to 1 ~ 100 for easier graphical representation. I made a similar approach to [heyhaiden](https://github.com/heyhaiden/plantMonitor)'s calibration method:
 
 ![Step 1](./img/mc.png)
@@ -549,4 +553,32 @@ I tested the maximum moisture reading by putting both nails fully into the water
 ![Step 1](./img/mc1.png)
 
 After drying both nails, I tested the minimum moisture reading by holding both nails in the air and got a reading of 4.57.
-[There is evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as a threshold indicator that the plant requires watering in the Arduino files. Overall, the moisture feed has a unique overall trend from either the temperature feed or the humidity feed.
+[There is evidence stating that the majority of plants thrive in soil with a moisture level that ranges between 20% and 60%.](https://www.greenwaybiotech.com/blogs/gardening-articles/how-soil-moisture-affects-your-plants-growth) Therefore, I used the reading 0.2*117.33 ≈ 24 as a threshold indicating that the plant requires watering in the Arduino sketches. 
+
+3. Adafruit IO is basic and less complex, nevertheless, we cannot overlook its limitations. Adafruit IO can only process 60 data points per minute and store data for 60 days: 
+
+<img src="./img/ada1.png" width="80%" height="80%" class="center">
+
+An efficient solution is to change the frequency of saving readings to Adafruit IO from per minute using minuteChange() to per 30 minutes using (currentMillis - previousMillis > interval). To efficiently store data and save storage space in IoT systems, we need to focus on collecting key information and reducing unnecessary distractions. We don't need to monitor our plants minute by minute to get extrx data. 
+Another limitation is that Adafruit IO is a no-code platform that uses a visual interface to enable non-technical users to create functions or visulaize data:
+
+<img src="./img/ada2.png" width="80%" height="80%" class="center">
+
+<img src="./img/ada3.png" width="80%" height="80%" class="center">
+
+Because of these fatal limitations, Adafruit IO is unsuitable for implementing large-scale projects. The data captured by IoT devices is not uniform. It could be analog signals, sensor readings, images, videos, etc. stored in large files. I doubt 60 data points per minute would satisfy the uploading efficiency. The data also needs to be stored for a much longer term. Google Home, Amazon Echo Studio, or any other IoT system wouldn't let their user's important information or data to be expired in a short period. Therefore, big corporations often protect their data integrity and privacy using secure protocols and encryption in their IoT systems.
+For my plant monitor, I could update security via software by adding firewall policies and VLAN configurations, or implement security mechanisms at the hardware level. The new Feather M4 Express has a built-in cryptographic engine with 256-bit AES and a pubkey controller. Nevertheless, the most important lesson I have learnt was NEVER upload your private information, such as your passwords, to online open source platform.
+
+## - References
+
+- "Adafruit IO Basics: Temperature & Humidity" by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-temperature-and-humidity/arduino-wiring
+- "Adafruit IO Basics: Servo" by Todd Treece: <br> https://learn.adafruit.com/adafruit-io-basics-servo/wiring
+- "A Beginner's Guide to the ESP8266" by Pieter P: <br> https://tttapa.github.io/ESP8266/Chap07%20-%20Wi-Fi%20Connections.html
+- "Energy and Heat Balance" by Lumen Learning: <br> https://courses.lumenlearning.com/suny-ap2/chapter/energy-and-heat-balance/
+- "Humidity" by Met Office:  <br> https://www.metoffice.gov.uk/weather/learn-about/weather/types-of-weather/humidity
+- "How to regulate the humidity in your bedroom" by Swissflex: <br> https://www.swissflex.com/en/blog/humidity-in-your-bedroom
+- "Tanh" by Wolfram. <br> https://reference.wolfram.com/language/ref/Tanh.html
+- "How Soil Moisture Can Affect Your Plant's Growth" by Amir Tajer: <br> https://www.greenwaybiotech.com/blogs/gardening-articles/
+- https://ietresearch.onlinelibrary.wiley.com/doi/10.1049/smc2.12016
+- https://www.vectorstock.com/royalty-free-vector/smart-home-internet-connected-devices-isometric-vector-21569900
+<br>
